@@ -1,4 +1,4 @@
-package vcfs;
+
 
 public enum ReservationState {
 	CONFIRMED,

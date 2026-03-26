@@ -1,4 +1,4 @@
-package vcfs;
+
 
 /**
  * Abstract base for all users (Candidate and Recruiter).

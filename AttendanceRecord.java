@@ -1,4 +1,4 @@
-package vcfs;
+
 
 /**
  * Attendance log for a single participant in a MeetingSession.
