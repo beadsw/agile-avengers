@@ -1,4 +1,4 @@
-package vcfs;
+
 
 /**
  * Per-session waiting area for candidates who attempt to join early.

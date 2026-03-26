@@ -1,4 +1,4 @@
-package vcfs;
+
 
 /**
  * Candidate booking preferences used for manual browsing and auto-booking.

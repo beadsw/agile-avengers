@@ -1,4 +1,4 @@
-package vcfs;
+
 
 /**
  * Candidate profile data used for auto-booking (string data is sufficient, file uploading of CVs is not required).
