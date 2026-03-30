@@ -1,11 +1,12 @@
 
-
+import java.time.LocalDateTime;
 /**
- * Application façade..
+ * Application façade..  central access point for all system operations
  */
 public class CareerFairSystem {
 
 	CareerFair fair;
+        SystemTimer timer;
 
 	/**
 	 * Admin: validate and set the fair timeline.
@@ -41,9 +42,32 @@ public class CareerFairSystem {
 	 * @param org
 	 * @param title
 	 */
+        
+        /**
+        * Create a booth for an organisation and attach a virtual room
+        */
 	Booth addBooth(Organization org, String title) {
-		// TODO - implement CareerFairSystem.addBooth
-		throw new UnsupportedOperationException();
+            // TODO - implement CareerFairSystem.addBooth
+            // Validate input parameters
+            if(org == null || title == null){    
+                throw new UnsupportedOperationException("Invalid input, cannot be null");
+            }
+            //Create booth and initialse basic fields
+            Booth booth = new Booth();
+            booth.organization = org;
+            booth.title = title;
+            booth.recruiters = new java.util.ArrayList<>();
+            
+            // Each booth owns one virtual room
+            VirtualRoom room = new VirtualRoom();
+            room.booth = booth;
+            room.state = RoomState.CLOSED;
+            room.sessions = new java.util.ArrayList<>();
+            
+            booth.room = room;
+            org.addBooth(booth); // Link booth to organisation
+            
+            return booth;
 	}
 
 	/**
@@ -100,9 +124,55 @@ public class CareerFairSystem {
 	 * @param offer
 	 * @param start
 	 */
+        
+        /**
+        * Manually create a confirmed booking for a candidate.
+        */
 	Reservation manualBook(Candidate candidate, Offer offer, LocalDateTime start) {
-		// TODO - implement CareerFairSystem.manualBook
-		throw new UnsupportedOperationException();
+            // TODO - implement CareerFairSystem.manualBook
+            //  Validate inputs
+            if (candidate == null || offer == null || start == null) {
+                throw new UnsupportedOperationException("Invalid input");
+            }
+
+            // Booking only allowed when bookings are open, during BOOKINGS_OPEN phase
+            if (!fair.canBook(start)) {
+                throw new UnsupportedOperationException("Bookings are not open");
+            }
+
+            // Create reservation object
+            Reservation reservation = new Reservation();
+            reservation.candidate = candidate;
+            reservation.offer = offer;
+            reservation.scheduledStart = start;
+            reservation.scheduledEnd = start.plusMinutes(offer.getDurationMins());
+            reservation.state = ReservationState.CONFIRMED;
+            
+            //Create associated meeting session
+            MeetingSession session = new MeetingSession();
+            session.reservation = reservation;
+            session.state = MeetingState.WAITING;
+            
+            reservation.session = session;
+            
+            // Link objects, reservation to candidate and offer
+            candidate.reservations.add(reservation);
+            offer.reservations.add(reservation);
+            
+            LocalDateTime now = timer.getNow();
+
+            // Notify candidate
+            Notification candidateNote = new Notification(candidate,"Booking confirmed for offer '" + offer.title + "' at " + start, now);
+            candidate.addNotification(candidateNote);
+
+            // Notify recruiter (offer publisher)
+            Recruiter recruiter = offer.publisher;
+
+            if (recruiter != null) {
+                Notification recruiterNote = new Notification(recruiter, "New booking from " + candidate.displayName + " for offer '" + offer.title + "' at " + start, now);
+                recruiter.addNotification(recruiterNote);
+            }
+            return reservation;
 	}
 
 	/**
@@ -110,9 +180,35 @@ public class CareerFairSystem {
 	 * @param candidate
 	 * @param request
 	 */
+        
+        /**
+        * Automatically find and create a booking based on a request
+        * Simplest implementation, first available offer
+        */
 	Reservation autoBook(Candidate candidate, Request request) {
-		// TODO - implement CareerFairSystem.autoBook
-		throw new UnsupportedOperationException();
+            // TODO - implement CareerFairSystem.autoBook
+            // Validate inputs
+            if (candidate == null || request == null) {
+                throw new UnsupportedOperationException("Invalid input");
+            }
+
+            //finds the first available offer
+            // Iterate through all organisations, booths, recruiters and offers
+            for(Organization org : fair.organizations){
+                for(Booth booth : org.booths){
+                    for(Recruiter recruiter : booth.recruiters){
+                        for(Offer offer : recruiter.offers){
+                            LocalDateTime time = fair.bookingsOpenTime; // Use earliest booking time as a simple strategy
+                            // Only book if valid booking phase
+                            if(fair.canBook(time)){
+                                return manualBook(candidate, offer, time);
+                            }
+                        }
+                    }
+                }
+            }
+            // No valid booking found
+            throw new UnsupportedOperationException("No available offers");
 	}
 
 	/**
@@ -149,17 +245,44 @@ public class CareerFairSystem {
 	/**
 	 * Advance time-based behaviour: phase transitions and session start/end.
 	 */
+        
+        /**
+        * Advance system behaviour based on simulated time.
+        * Updates the fair phase using the SystemTimer.
+        */
 	void tick() {
-		// TODO - implement CareerFairSystem.tick
-		throw new UnsupportedOperationException();
+            // TODO - implement CareerFairSystem.tick
+            if (fair == null || timer == null) {
+                throw new UnsupportedOperationException("Fair not initialised");
+            }
+            
+            // Get current simulated time
+            LocalDateTime now = timer.getNow();
+            // Trigger phase update inside CareerFair
+            // Update fair phase based on time
+            fair.updatePhase(now);  // this internally calls updatePhase(now)
 	}
 
 	/**
 	 * Query for UI to display system status.
 	 */
+        
+        /**
+        * Return current phase for UI display.
+        */
 	FairPhase getCurrentPhase() {
-		// TODO - implement CareerFairSystem.getCurrentPhase
-		throw new UnsupportedOperationException();
+            // TODO - implement CareerFairSystem.getCurrentPhase
+            if (fair == null) {
+                throw new UnsupportedOperationException("Fair not initialized");
+            }
+            return fair.getPhase();
 	}
+        
+        LocalDateTime getCurrentTime() {
+            if (timer == null) {
+                throw new UnsupportedOperationException("Timer not initialised");
+            }
+            return timer.getNow();
+        }
 
 }
