@@ -16,8 +16,12 @@ public class AttendanceRecord {
 	 * @param outcome
 	 */
 	void close(LocalDateTime leaveTime, AttendanceOutcome outcome) {
-		// TODO - implement AttendanceRecord.close
-		throw new UnsupportedOperationException();
-	}
+		if (leaveTime == null || outcome == null) {
+                    throw new UnsupportedOperationException();
+                }
+                
+                this.leaveTime = leaveTime;
+                this.outcome = outcome;
+        }
 
 }

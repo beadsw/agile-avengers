@@ -1,5 +1,6 @@
 package vcfs;
 
+import java.time.LocalDateTime; 
 /**
  * A booking linking a Candidate to an Offer at a specific time window.
  */
@@ -17,17 +18,28 @@ public class Reservation {
 	 * @param reason
 	 */
 	void cancel(String reason) {
-		// TODO - implement Reservation.cancel
-		throw new UnsupportedOperationException();
-	}
+            if (reason == null)  {
+                throw new UnsupportedOperationException("Reason required");
+            }
 
+            state = ReservationState.CANCELLED;
+        }
+        
 	/**
-	 * True iff reservation is active at time now.
+	 * True if reservation is active at time now.
 	 * @param now
 	 */
 	boolean isActive(LocalDateTime now) {
-		// TODO - implement Reservation.isActive
-		throw new UnsupportedOperationException();
-	}
-
+		if (now == null || scheduledStart == null || scheduledEnd == null) {
+                    throw new UnsupportedOperationException();
+                }
+                
+                if(state == null){
+                    return false;
+                }
+                
+                return state == ReservationState.CONFIRMED && now.isAfter(scheduledStart) && now.isBefore(scheduledEnd);
+        }
 }
+
+        

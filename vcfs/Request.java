@@ -17,8 +17,12 @@ public class Request {
 	 * @param maxAppointments
 	 */
 	void updatePreferences(String desiredTags, String preferredOrgs, int maxAppointments) {
-		// TODO - implement Request.updatePreferences
-		throw new UnsupportedOperationException();
-	}
-
+            if (desiredTags == null || preferredOrgs == null || maxAppointments < 0)  {
+                throw new UnsupportedOperationException("Invalid preferences");
+            }
+                
+            this.desiredTags = desiredTags;
+            this.preferredOrgs = preferredOrgs;
+            this.maxAppointments = maxAppointments;
+        }
 }
