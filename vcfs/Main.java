@@ -14,10 +14,11 @@ public class Main {
        AdminController adminController = new AdminController(system);
        RecruiterController recruiterController = new RecruiterController(system);
        CandidateController candidateController = new CandidateController(system);
-               
+       SystemTimer systemTimer = new SystemTimer(system);
+       
        AdminScreen adminScreen = new AdminScreen(adminController);
        RecruiterScreen recruiterScreen = new RecruiterScreen(recruiterController);
        CandidateScreen candidateScreen = new CandidateScreen(candidateController);
-       
+       SystemTimerScreen systemTimerScreen = new SystemTimerScreen(systemTimer);
    }
 }
