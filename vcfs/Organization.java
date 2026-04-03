@@ -17,7 +17,7 @@ public class Organization {
 	 */
 	void addBooth(Booth booth) {
 		// TODO - implement Organization.addBooth
-		throw new UnsupportedOperationException();
+		booths.add(booth);
 	}
 
 	/**
@@ -26,7 +26,7 @@ public class Organization {
 	 */
 	void removeBooth(Booth booth) {
 		// TODO - implement Organization.removeBooth
-		throw new UnsupportedOperationException();
+		booths.remove(booth);
 	}
 
 }
