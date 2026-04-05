@@ -11,6 +11,12 @@ public class Candidate extends User {
 	Collection<Request> requests;
 	Collection<Reservation> reservations;
 
+        
+//constructor
+public Candidate() {
+    requests = new ArrayList<>();
+    reservations = new ArrayList<>();
+}
 	/**
 	 * Create booking request/preferences.
 	 * @param desiredTags
@@ -18,22 +24,51 @@ public class Candidate extends User {
 	 * @param maxAppointments
 	 */
 	Request createRequest(String desiredTags, String preferredOrgs, int maxAppointments) {
-		// TODO - implement Candidate.createRequest
-		throw new UnsupportedOperationException();
+		if (desiredTags == null || preferredOrgs == null || maxAppointments < 0) {
+                         throw new UnsupportedOperationException("Invalid Request");
 	}
 
+                
+                Request request = new Request();
+                request.requester = this;
+                request.updatePreferences(desiredTags, preferredOrgs, maxAppointments);
+                
+                requests.add(request);
+                return request;
+                
+        }
+        
+        
 	/**
 	 * 
 	 * @param reservationId
 	 */
 	void cancelMyReservation(String reservationId) {
-		// TODO - implement Candidate.cancelMyReservation
-		throw new UnsupportedOperationException();
+            if (reservationId == null) {
+                    throw new UnsupportedOperationException("Invalid ID");
 	}
 
+            for (Reservation r : reservations)  {
+                if (r.offer != null && r.offer.title.equals(reservationId)) {
+                    r.cancel("Cancelled by candidate");
+                    return;
+                }
+            }
+            
+            throw new UnsupportedOperationException("Reservation not found");
+
+        }
+        
 	String viewMySchedule() {
-		// TODO - implement Candidate.viewMySchedule
-		throw new UnsupportedOperationException();
-	}
-
+            String result;
+            result = "";
+            
+            for (Reservation r : reservations) {
+                result += "Offer: " + r.offer.title + " | Start: " + r.scheduledStart + "\n";
+            }
+            
+            return result;
+        }
+        
 }
+                
