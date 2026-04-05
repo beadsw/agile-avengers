@@ -11,6 +11,9 @@ package vcfs;
 public class Main {
    public static void main(String[] args){
        CareerFairSystem system = new CareerFairSystem();
+       //SystemTimer systemTimer = new SystemTimer(system);
+       //new SystemTimerScreen(systemTimer);
+       
        AdminController adminController = new AdminController(system);
        RecruiterController recruiterController = new RecruiterController(system);
        CandidateController candidateController = new CandidateController(system);
