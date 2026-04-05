@@ -15,6 +15,7 @@ public class AttendanceRecord {
 	 * @param leaveTime
 	 * @param outcome
 	 */
+        
 	void close(LocalDateTime leaveTime, AttendanceOutcome outcome) {
 		if (leaveTime == null || outcome == null) {
                     throw new UnsupportedOperationException();
