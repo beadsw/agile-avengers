@@ -36,6 +36,7 @@ public class Notification {
     /**
      * Format notification for display.
      */
+    @Override
     public String toString() {
         return "[" + timestamp + "] " + message;
     }

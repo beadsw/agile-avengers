@@ -7,6 +7,16 @@ public class CareerFairSystem {
 
 	CareerFair fair;
         SystemTimer timer;
+        
+        /**
+        * Initialise the CareerFairSystem
+        * Creates a new CareerFair instance and links it back to this system
+        * This ensures the fair can access system-level services such as the timer
+        */
+        public CareerFairSystem() {
+            this.fair = new CareerFair();
+            this.fair.system = this;
+        }
 
 	/**
 	 * Admin: validate and set the fair timeline.
@@ -65,6 +75,12 @@ public class CareerFairSystem {
             room.sessions = new java.util.ArrayList<>();
             
             booth.room = room;
+            
+            // Ensure org booths list exists
+            if (org.booths == null) {
+                org.booths = new java.util.ArrayList<>();
+            }
+            
             org.addBooth(booth); // Link booth to organisation
             
             return booth;
@@ -139,6 +155,32 @@ public class CareerFairSystem {
             if (!fair.canBook(start)) {
                 throw new UnsupportedOperationException("Bookings are not open");
             }
+            
+            // Ensure offer reservations list exists
+            if (offer.reservations == null) {
+                offer.reservations = new java.util.ArrayList<>();
+            }
+            
+            // Capacity check
+            if (offer.reservations != null && offer.reservations.size() >= offer.capacity) {
+                throw new UnsupportedOperationException("Offer full");
+            }
+            
+            // Time clash check
+            LocalDateTime newEnd = start.plusMinutes(offer.getDurationMins());
+
+            for (Reservation r : candidate.reservations) {
+                if (r.state == ReservationState.CONFIRMED) {
+
+                    if (r.scheduledStart == null || r.scheduledEnd == null){
+                        continue;
+                    }
+
+                    if (start.isBefore(r.scheduledEnd) && newEnd.isAfter(r.scheduledStart)) {
+                        throw new UnsupportedOperationException("Time clash with another booking");
+                    }
+                }
+            }
 
             // Create reservation object
             Reservation reservation = new Reservation();
@@ -147,7 +189,7 @@ public class CareerFairSystem {
             reservation.scheduledStart = start;
             reservation.scheduledEnd = start.plusMinutes(offer.getDurationMins());
             reservation.state = ReservationState.CONFIRMED;
-            
+                 
             //Create associated meeting session
             MeetingSession session = new MeetingSession();
             session.reservation = reservation;
@@ -167,7 +209,6 @@ public class CareerFairSystem {
 
             // Notify recruiter (offer publisher)
             Recruiter recruiter = offer.publisher;
-
             if (recruiter != null) {
                 Notification recruiterNote = new Notification(recruiter, "New booking from " + candidate.displayName + " for offer '" + offer.title + "' at " + start, now);
                 recruiter.addNotification(recruiterNote);
@@ -191,13 +232,41 @@ public class CareerFairSystem {
             if (candidate == null || request == null) {
                 throw new UnsupportedOperationException("Invalid input");
             }
+            
+            if (candidate.reservations.size() >= request.maxAppointments) {
+                throw new UnsupportedOperationException("Max appointments reached");
+            }
+            
+            if (fair.organizations == null) {
+                throw new UnsupportedOperationException("No organisations available");
+            }
 
             //finds the first available offer
             // Iterate through all organisations, booths, recruiters and offers
             for(Organization org : fair.organizations){
+                if (org.booths == null){ 
+                    continue;
+                }
                 for(Booth booth : org.booths){
+                    if (booth.recruiters == null){
+                        continue;
+                    }
                     for(Recruiter recruiter : booth.recruiters){
+                        if (recruiter.offers == null){
+                            continue;
+                        }
                         for(Offer offer : recruiter.offers){
+                            
+                            // Capacity check
+                            if (offer.reservations != null &&
+                                offer.reservations.size() >= offer.capacity) {
+                                continue;
+                            }
+                            
+                            if (request.desiredTags != null && offer.topicTags != null && !offer.topicTags.contains(request.desiredTags)) {
+                                continue;
+                            }
+                            
                             LocalDateTime time = fair.bookingsOpenTime; // Use earliest booking time as a simple strategy
                             // Only book if valid booking phase
                             if(fair.canBook(time)){
@@ -258,6 +327,11 @@ public class CareerFairSystem {
             
             // Get current simulated time
             LocalDateTime now = timer.getNow();
+            
+            if (now == null) {
+                throw new UnsupportedOperationException("Current time not set");
+            }
+            
             // Trigger phase update inside CareerFair
             // Update fair phase based on time
             fair.updatePhase(now);  // this internally calls updatePhase(now)

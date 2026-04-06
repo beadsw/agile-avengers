@@ -6,7 +6,7 @@ import java.util.*;
  */
 public abstract class User {
     
-        Collection<Notification> notifications;
+        ArrayList<Notification> notifications;
 
 	String id;
 	String displayName;
@@ -44,7 +44,7 @@ public abstract class User {
         /**
         * Retrieve all notifications for this user.
         */
-        Collection<Notification> getNotifications() {
+        ArrayList<Notification> getNotifications() {
             return notifications;
         }
 }

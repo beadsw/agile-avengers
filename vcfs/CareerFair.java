@@ -9,8 +9,9 @@ import java.util.*;
  */
 public class CareerFair {
 
-	Collection<Organization> organizations;
-	Collection<AuditEntry> auditTrail;
+        //Changed to ArrayLists
+	ArrayList<Organization> organizations = new ArrayList<>();
+	ArrayList<AuditEntry> auditTrail = new ArrayList<>();
 	CareerFairSystem system;
 	String name;
 	FairPhase currentPhase;
@@ -81,7 +82,7 @@ public class CareerFair {
         }
 
 	/**
-         * Checks if the fair is currently in the given place
+         * Checks if the fair is currently in the given phase
 	 * True iff currentPhase == phase.
 	 * @param phase
 	 */
