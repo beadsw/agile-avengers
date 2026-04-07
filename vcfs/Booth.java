@@ -17,8 +17,15 @@ public class Booth {
 	 * @param recruiter
 	 */
 	void assignRecruiter(Recruiter recruiter) {
-		// TODO - implement Booth.assignRecruiter
-		throw new UnsupportedOperationException();
+            if(recruiter == null){
+                throw new UnsupportedOperationException("Recruiter cannot be null");
+            }
+            
+            if(recruiters == null){
+                recruiters = new ArrayList<>();
+            }
+            recruiters.add(recruiter);
+            recruiter.booth = this;
 	}
 
 	/**
@@ -26,8 +33,15 @@ public class Booth {
 	 * @param recruiter
 	 */
 	void removeRecruiter(Recruiter recruiter) {
-		// TODO - implement Booth.removeRecruiter
-		throw new UnsupportedOperationException();
+            if(recruiter == null){
+                throw new UnsupportedOperationException("Recruiter cannot be null");
+            }
+            if(recruiters != null){
+                recruiters.remove(recruiter);
+            }
+            if(recruiter.booth == this){
+                recruiter.booth = null;
+            }
 	}
 
 	/**
