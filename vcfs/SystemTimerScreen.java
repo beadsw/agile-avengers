@@ -4,21 +4,44 @@ package vcfs;
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 
-/**
- *
- * @author elm00516
- */
-public class SystemTimerScreen extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SystemTimerScreen.class.getName());
+import java.awt.event.ActionListener;
+import static java.lang.Integer.parseInt;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import static javax.swing.JOptionPane.INFORMATION_MESSAGE;
 
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
+
+public class SystemTimerScreen extends javax.swing.JFrame {
+
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(SystemTimerScreen.class.getName());
+    private SystemTimer systemTimer;
+    
+    
+        // Variables declaration - do not modify                     
+    private javax.swing.JButton currentTimeBtn;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton setTimeBtn;
+    private javax.swing.JButton skipMinsBtn;
+    // End of variables declaration            
     /**
      * Creates new form NewJFrame
+     * @param systemTimer
      */
-    public SystemTimerScreen() {
+    
+    public SystemTimerScreen(SystemTimer systemTimer) {
+        this.systemTimer = systemTimer;
         initComponents();
+        setVisible(true);
+        setTitle("System Timer Screen");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -39,6 +62,11 @@ public class SystemTimerScreen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         currentTimeBtn.setText("CurrentTime");
+        currentTimeBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                currentTimeBtnActionPerformed(evt);
+            }
+        });
 
         setTimeBtn.setText("setTime");
         setTimeBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -56,14 +84,9 @@ public class SystemTimerScreen extends javax.swing.JFrame {
 
         jTextField1.setText("current time");
 
-        jTextField2.setText("yyyy-dd-hh-mm");
-
+        jTextField2.setText("yyyy-dd-mm-hh-mm");
+        
         jTextField3.setText("number of mins");
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -118,42 +141,58 @@ public class SystemTimerScreen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>                        
 
-    private void setTimeBtnActionPerformed(java.awt.event.ActionEvent evt) {                                           
-        // TODO add your handling code here:
-    }                                          
+    private void setTimeBtnActionPerformed(java.awt.event.ActionEvent evt) {
+        try{
+            String date = jTextField2.getText();
+            String[] substrings = date.split("-");
+            int[] nums = new int[substrings.length];
+            for (int i = 0; i < substrings.length; i++)
+            {
+                nums[i] = Integer.parseInt(substrings[i].trim());
+            }
+            int year = nums[0];
+            int month = nums[1];
+            int day = nums[2];
+            int hour = nums [3];
+            int min = nums [4];
+       
+            systemTimer.jumpTo(year, month, day, hour, min);
+
+        }catch(Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Invalid Date", "Ensure valid dates are entered.", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        //systemTimer.jumpTo(year, month, day, hour, min);
+        
+    }
+    
+    private void currentTimeBtnActionPerformed(java.awt.event.ActionEvent evt)
+    {
+        try{
+            java.time.LocalDateTime mytime = systemTimer.getNow();
+            JOptionPane.showMessageDialog(null, "Current time is: "+mytime.toString(),"current time", JOptionPane.INFORMATION_MESSAGE);
+        }catch (Exception e)
+        {
+            JOptionPane.showMessageDialog(null, "Could not get the current time","", JOptionPane.ERROR_MESSAGE);
+        }
+    }
 
     private void skipMinsBtnActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
-
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {                                            
-        // TODO add your handling code here:
-    }                                           
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        String minutes = jTextField3.getText();
+        try{
+            int mins = parseInt(minutes);
+            System.out.println(mins);
+            systemTimer.stepMinutes(mins);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Invalid Integer, Input an integer","Error", JOptionPane.ERROR_MESSAGE);
         }
-        //</editor-fold>
+    }                                           
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new SystemTimerScreen().setVisible(true));
-    }
+
+
+       
+}
 
     // Variables declaration - do not modify                     
     private javax.swing.JButton currentTimeBtn;
