@@ -1,4 +1,8 @@
 package vcfs;
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ */
 
 import java.awt.event.ActionListener;
 import static java.lang.Integer.parseInt;
@@ -190,3 +194,13 @@ public class SystemTimerScreen extends javax.swing.JFrame {
        
 }
 
+    // Variables declaration - do not modify                     
+    private javax.swing.JButton currentTimeBtn;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JButton setTimeBtn;
+    private javax.swing.JButton skipMinsBtn;
+    // End of variables declaration                   
+}
