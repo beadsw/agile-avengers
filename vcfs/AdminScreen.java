@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package vcfs;
+import static java.time.LocalDateTime.parse;
 import javax.swing.JOptionPane;
 import java.util.*;
 
@@ -497,7 +498,12 @@ public class AdminScreen extends javax.swing.JFrame{
             String newFairClosing = String.format(dateFormat, NewFairClosingYear.getText(), NewFairClosingMonth.getText(), NewFairClosingDay.getText(), NewFairClosingHour.getText(), NewFairClosingMinute.getText(), "00");
             String newBookingOpening = String.format(dateFormat, NewBookingOpeningYear.getText(), NewBookingOpeningMonth.getText(), NewBookingOpeningDay.getText(), NewBookingOpeningHour.getText(), NewBookingOpeningMinute.getText(), "00");
             String newBookingClosing = String.format(dateFormat, NewBookingClosingYear.getText(), NewBookingClosingMonth.getText(), NewBookingClosingDay.getText(), NewBookingClosingHour.getText(), NewBookingClosingMinute.getText(), "00");
-            adminController.updateOpeningTimes(newFairOpening, newFairClosing, newBookingOpening, newBookingClosing);
+            java.time.LocalDateTime starting = parse(newFairOpening);
+            java.time.LocalDateTime ending = parse(newFairClosing);
+            java.time.LocalDateTime opening = parse(newBookingOpening);
+            java.time.LocalDateTime closing = parse(newBookingClosing);
+            
+            adminController.configureTimes(starting, ending, opening, closing);
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, "Invalid Date", "Ensure valid dates are entered.", JOptionPane.ERROR_MESSAGE);
         }
@@ -505,7 +511,7 @@ public class AdminScreen extends javax.swing.JFrame{
 
     private void AddOrganisationButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                      
         String newOrganisationName = NewOrganisationBox.getText();
-        adminController.addNewOrganisation(newOrganisationName);
+        adminController.addOrganisation(newOrganisationName);
     }                                                     
 
     private void ResetFairDataButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                    
