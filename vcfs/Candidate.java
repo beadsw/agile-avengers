@@ -12,11 +12,14 @@ public class Candidate extends User {
 	Collection<Reservation> reservations;
 
         
-//constructor
-public Candidate() {
-    requests = new ArrayList<>();
-    reservations = new ArrayList<>();
-}
+    //constructor
+    public Candidate(String displayName, String emailAddress, String cvSummary, String[] interestTags) {
+        super(displayName, emailAddress);
+        profile = new CandidateProfile(cvSummary, interestTags);
+        
+        requests = new ArrayList<>();
+        reservations = new ArrayList<>();
+    }
 	/**
 	 * Create booking request/preferences.
 	 * @param desiredTags

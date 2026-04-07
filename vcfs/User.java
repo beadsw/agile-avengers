@@ -13,8 +13,10 @@ public abstract class User {
 	String email;
         
         // Constructor to initialise notification list
-        public User() {
+        public User(String displayName, String email) {
             this.notifications = new ArrayList<>();
+            this.displayName = displayName;
+            this.email = email;
         }
 
 	/**

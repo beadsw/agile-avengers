@@ -13,7 +13,6 @@ import static vcfs.FairPhase.*;
 public class AdminController {
     private CareerFairSystem system;
     private AdminScreen adminScreen;
-    private SystemTimer systemTimer;
     FairPhase State;
     
     public AdminController(CareerFairSystem system) {
@@ -29,21 +28,22 @@ public class AdminController {
     public void configureTimes(LocalDateTime openTime, LocalDateTime closeTime, LocalDateTime startTime, LocalDateTime endTime)
     {
        //validate and set the fair routine, using state changes?
-       LocalDateTime sysTime = systemTimer.getNow();
+       LocalDateTime time;
+       time = system.getCurrentTime();
        
-       if (sysTime == openTime)
+       if (time == openTime)
        {
            State = BOOKINGS_OPEN;
        }
-       if (sysTime == closeTime)
+       if (time == closeTime)
        {
            State = BOOKINGS_CLOSED;
        }
-       if (sysTime == startTime)
+       if (time == startTime)
        {
            State = FAIR_LIVE;
        }
-       if (sysTime == endTime)
+       if (time == endTime)
        {
            State = DORMANT;
        }
@@ -74,15 +74,4 @@ public class AdminController {
         return Org;
     }
     
-    public void closeFair()
-    {
-        State = DORMANT;
-        resetFairData();
-    }
-    
-    public void prepareFair()
-    {
-        State = PREPARING;
-    }
-
 }

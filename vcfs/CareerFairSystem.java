@@ -1,5 +1,6 @@
 package vcfs;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 /**
  * Application façade..  central access point for all system operations
  */
@@ -262,8 +263,10 @@ public class CareerFairSystem {
                                 offer.reservations.size() >= offer.capacity) {
                                 continue;
                             }
+                        
+                            ArrayList<String> offerTopicTags = offer.getTopicTags(); //Gets an offers tags as array list to use .contains()
                             
-                            if (request.desiredTags != null && offer.topicTags != null && !offer.topicTags.contains(request.desiredTags)) {
+                            if (request.desiredTags != null && offer.topicTags != null && !offerTopicTags.contains(request.desiredTags)) {
                                 continue;
                             }
                             

@@ -319,7 +319,6 @@ public class CandidateScreen extends javax.swing.JFrame {
     private javax.swing.JButton RegisterCandidateButton;
     private javax.swing.JTextField ReservationIDBox;
     private javax.swing.JLabel ReservationIDLabel;
-    private javax.swing.JFileChooser jFileChooser1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;

@@ -188,7 +188,7 @@ public class RecruiterScreen extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Publish Offer", jPanel2);
 
-        ReservationIDLabel.setText("Reservation ID:");
+        ReservationIDLabel.setText("Offer Name:");
 
         CancellationReasonLabel.setText("Cancellation Reason:");
 
@@ -277,10 +277,10 @@ public class RecruiterScreen extends javax.swing.JFrame {
 
     private void CancelReservationButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                        
         try{
-            String reservationID = ReservationIDBox.getText();
+            String reservationName = ReservationIDBox.getText();
             String cancellationReason = CancellationReasonBox.getText();
             
-            recruiterController.cancelAsRecruiter(recruiter, reservationID, cancellationReason);
+            recruiterController.cancelAsRecruiter(recruiter, reservationName, cancellationReason);
             
         }catch(Exception e){
         }

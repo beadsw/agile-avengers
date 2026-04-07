@@ -11,9 +11,17 @@ public class Offer {
 	Collection<Reservation> reservations;
 	String title;
 	int durationMins;
-	String topicTags;
+	String[] topicTags;
 	int capacity;
 
+        public Offer(String title, int durationMins, String[] topicTags, int capacity, Recruiter recruiter){
+            this.title = title;
+            this.durationMins = durationMins;
+            this.topicTags = topicTags;
+            this.capacity = capacity;
+            publisher = recruiter;
+        }
+        
 	/**
 	 * Update offer metadata (topic/tags, duration, capacity).
 	 * @param title
@@ -21,7 +29,7 @@ public class Offer {
 	 * @param topicTags
 	 * @param capacity
 	 */
-	void updateDetails(String title, int durationMins, String topicTags, int capacity) {
+	public void updateDetails(String title, int durationMins, String topicTags, int capacity) {
 		// TODO - implement Offer.updateDetails
 		throw new UnsupportedOperationException();
 	}
@@ -29,8 +37,16 @@ public class Offer {
 	/**
 	 * Return offer duration (minutes).
 	 */
-	int getDurationMins() {
+	public int getDurationMins() {
 		return this.durationMins;
 	}
+        
+        public ArrayList<String> getTopicTags(){
+            ArrayList<String> tags = new ArrayList<String>();
+            for(int i = 0; i < topicTags.length; i++){
+                tags.add(topicTags[i]);
+            }
+            return tags;
+        }
 
 }
