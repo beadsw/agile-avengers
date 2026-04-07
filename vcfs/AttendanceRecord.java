@@ -1,5 +1,6 @@
 package vcfs;
 
+import java.time.LocalDateTime;
 /**
  * Attendance log for a single participant in a MeetingSession.
  */
