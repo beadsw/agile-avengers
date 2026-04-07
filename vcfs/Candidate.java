@@ -10,6 +10,9 @@ public class Candidate extends User {
 	CandidateProfile profile;
 	Collection<Request> requests;
 	Collection<Reservation> reservations;
+        Candidate candidate;
+        String cvSummary;
+        String interestTags;
 
         
     //constructor
@@ -73,5 +76,36 @@ public class Candidate extends User {
             return result;
         }
         
+        void updateCVSummary(String cvSummary){
+            if(cvSummary == null){
+                throw new UnsupportedOperationException("Invalid CV");
+            }
+            
+             this.cvSummary = cvSummary;
+            }
+        
+        
+        void addInterestTags(String interestTags){
+            if(interestTags == null){
+                throw new UnsupportedOperationException("Invalid tags");
+            }
+            
+            if(this.interestTags != null){
+                this.interestTags = interestTags;
+                }
+                else{
+                    this.interestTags += "," + interestTags;
+                }
+            }
+        
+        
+        void removeInterestTags(String interestTagToRemove){
+            if(interestTagToRemove == null || this.interestTags == null){
+                throw new UnsupportedOperationException("Invalid tag");
+
+            }
+            this.interestTags = this.interestTags.replace(interestTagToRemove, "");
+        }
 }
+
                 
