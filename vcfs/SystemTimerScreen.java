@@ -189,18 +189,4 @@ public class SystemTimerScreen extends javax.swing.JFrame {
         }
     }                                           
 
-
-
-       
-}
-
-    // Variables declaration - do not modify                     
-    private javax.swing.JButton currentTimeBtn;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JButton setTimeBtn;
-    private javax.swing.JButton skipMinsBtn;
-    // End of variables declaration                   
-}
+}           
