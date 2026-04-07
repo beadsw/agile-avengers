@@ -7,16 +7,26 @@ import java.util.*;
  */
 public class Booth {
 
-	Collection<Recruiter> recruiters;
+	ArrayList<Recruiter> recruiters;
 	VirtualRoom room;
 	Organization organization;
 	String title;
+        
+        public Booth(){ //Empty constructor
+            
+        }
 
+        public Booth(String boothTitle, Recruiter recruiter){
+            title = boothTitle;
+            room = new VirtualRoom();
+            recruiters.add(recruiter);
+        }
+        
 	/**
 	 * Assign a recruiter to this booth.
 	 * @param recruiter
 	 */
-	void assignRecruiter(Recruiter recruiter) {
+	public void assignRecruiter(Recruiter recruiter) {
             if(recruiter == null){
                 throw new UnsupportedOperationException("Recruiter cannot be null");
             }
@@ -32,7 +42,7 @@ public class Booth {
 	 * Unassign a recruiter from this booth.
 	 * @param recruiter
 	 */
-	void removeRecruiter(Recruiter recruiter) {
+	public void removeRecruiter(Recruiter recruiter) {
             if(recruiter == null){
                 throw new UnsupportedOperationException("Recruiter cannot be null");
             }

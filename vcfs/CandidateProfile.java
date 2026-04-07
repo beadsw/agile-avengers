@@ -5,9 +5,13 @@ package vcfs;
  */
 public class CandidateProfile {
 
-	Candidate candidate;
 	String cvSummary;
-	String interestTags;
+	String[] interestTags;
+        
+        public CandidateProfile(String summary, String[] tags){
+            cvSummary = summary;
+            interestTags = tags;
+        }
 
 	/**
 	 * Update the candidate's profile fields.
