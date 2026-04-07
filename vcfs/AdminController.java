@@ -55,9 +55,9 @@ public class AdminController {
         //implement method, resetting to default the fair data
         //removes old reservation records, meeting session records and notifications
         //change states?
-        attendanceRecords.clear();
-        sessionRecords.clear(); //assuming these would be stored as arrayLists of objects, Ill fix this when the arrayLists are implemented :)
-        notifications.clear();
+        //attendanceRecords.clear();
+        //sessionRecords.clear(); //assuming these would be stored as arrayLists of objects, Ill fix this when the arrayLists are implemented :)
+        //notifications.clear();
         
         if (State != DORMANT){//set the state to closed
            State = DORMANT;
@@ -65,7 +65,7 @@ public class AdminController {
         
     }
     
-    public Organization addOrganization(String title)
+    public Organization addOrganisation(String title)
     {
         Organization Org;
         Org = new Organization();
